@@ -40,6 +40,20 @@ This is a modern dual-purpose web application built with React and Express, feat
   - Automatic execution of successful tasks (website opening, information display)
   - Support for mixed task types (information requests, website navigation, complex actions)
   - Task completion statistics and error handling
+- **COMPOUND COMMANDS**: Natural language compound command processing:
+  - "open youtube and search for cooking tutorials" → Opens YouTube + Google search with automation
+  - "tell me about javascript and open github" → Provides JS information + opens GitHub
+  - "search for recipes and open pinterest" → Google search + Pinterest opening
+  - Intelligent "and" connector parsing for seamless multi-action commands
+  - Follow-up suggestions based on completed tasks for enhanced productivity
+  - Smart command prioritization (search actions before information requests)
+  - Contextual suggestions like "Search YouTube for specific content" after opening YouTube
+- **ENHANCED GENERIC SEARCH**: Improved search command processing:
+  - "search for cooking tutorials" → Google search with step-by-step automation
+  - "search about artificial intelligence" → Comprehensive Google search process
+  - "look for wireless headphones" → Automated search with navigation steps
+  - Intelligent search query extraction from natural language commands
+  - Complete automation instructions for executing searches effectively
 
 ## User Preferences
 

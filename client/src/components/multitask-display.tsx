@@ -23,13 +23,17 @@ interface MultitaskDisplayProps {
   isVisible: boolean;
   onClose: () => void;
   onExecuteTask?: (taskResult: TaskResult) => void;
+  followUpSuggestions?: string[];
+  onExecuteSuggestion?: (suggestion: string) => void;
 }
 
 export function MultitaskDisplay({ 
   tasks, 
   isVisible, 
   onClose, 
-  onExecuteTask 
+  onExecuteTask,
+  followUpSuggestions = [],
+  onExecuteSuggestion 
 }: MultitaskDisplayProps) {
   if (!isVisible || !tasks || tasks.length === 0) return null;
 
@@ -158,6 +162,28 @@ export function MultitaskDisplay({
             </div>
           )}
         </div>
+
+        {/* Follow-up Suggestions */}
+        {followUpSuggestions.length > 0 && (
+          <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded border border-blue-200 dark:border-blue-800">
+            <div className="text-sm font-medium text-blue-700 dark:text-blue-300 mb-2">
+              What would you like to do next?
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {followUpSuggestions.map((suggestion, index) => (
+                <Button
+                  key={index}
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onExecuteSuggestion && onExecuteSuggestion(suggestion)}
+                  className="text-xs text-blue-600 dark:text-blue-400 border-blue-300 dark:border-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/30"
+                >
+                  {suggestion}
+                </Button>
+              ))}
+            </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

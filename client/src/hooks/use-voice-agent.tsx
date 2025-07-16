@@ -20,6 +20,7 @@ interface VoiceAgentState {
   automationSteps: any[];
   informationResponse: string;
   multitaskResults: any[];
+  followUpSuggestions: string[];
 }
 
 declare global {
@@ -45,6 +46,7 @@ export function useVoiceAgent(settings: VoiceAgentSettings) {
     automationSteps: [],
     informationResponse: "",
     multitaskResults: [],
+    followUpSuggestions: [],
   });
 
   // Check browser support
@@ -180,8 +182,12 @@ export function useVoiceAgent(settings: VoiceAgentSettings) {
               }
             });
             
-            // Store multitask results for display
-            setState(prev => ({ ...prev, multitaskResults: result.tasks }));
+            // Store multitask results and follow-up suggestions
+            setState(prev => ({ 
+              ...prev, 
+              multitaskResults: result.tasks,
+              followUpSuggestions: result.followUpSuggestions || []
+            }));
           }
         }
       } else {
@@ -261,7 +267,7 @@ export function useVoiceAgent(settings: VoiceAgentSettings) {
   }, []);
 
   const clearMultitaskResults = useCallback(() => {
-    setState(prev => ({ ...prev, multitaskResults: [] }));
+    setState(prev => ({ ...prev, multitaskResults: [], followUpSuggestions: [] }));
   }, []);
 
   // Update recognition settings when they change

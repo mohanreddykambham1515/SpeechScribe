@@ -222,6 +222,11 @@ export default function VoiceAgent() {
               window.open(taskResult.result.url, '_blank');
             }
           }}
+          followUpSuggestions={agent.followUpSuggestions}
+          onExecuteSuggestion={(suggestion) => {
+            agent.executeCommand(suggestion);
+            refetchHistory();
+          }}
         />
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -426,6 +431,7 @@ export default function VoiceAgent() {
                     <li><strong>Shopping:</strong> "Find on Amazon wireless headphones"</li>
                     <li><strong>Email:</strong> "Compose email in Gmail"</li>
                     <li><strong>Multitask:</strong> "1. Open YouTube 2. Search Google for news 3. Go to Gmail"</li>
+                    <li><strong>Compound:</strong> "Open YouTube and search for cooking tutorials"</li>
                   </ul>
                 </div>
               </CardContent>

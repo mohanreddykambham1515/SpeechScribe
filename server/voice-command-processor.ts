@@ -8,6 +8,7 @@ interface CommandResult {
   sources?: string[];
   isMultiTask?: boolean;
   tasks?: TaskResult[];
+  followUpSuggestions?: string[];
 }
 
 interface TaskResult {
@@ -214,6 +215,11 @@ export class VoiceCommandProcessor {
       return this.processMultiTaskCommand(command);
     }
     
+    // Check for compound commands with "and" connector
+    if (this.isCompoundCommand(normalizedCommand)) {
+      return this.processCompoundCommand(normalizedCommand);
+    }
+    
     // Check for information requests first
     const informationResult = this.processInformationRequest(normalizedCommand);
     if (informationResult.success) {
@@ -256,6 +262,44 @@ export class VoiceCommandProcessor {
     return numberedItems && numberedItems.length > 1;
   }
 
+  private isCompoundCommand(command: string): boolean {
+    // Check for compound commands with "and" connector
+    return command.includes(' and ') && !command.includes('1.') && !command.includes('2.');
+  }
+
+  private processCompoundCommand(command: string): CommandResult {
+    // Split command by "and" and process each part
+    const parts = command.split(' and ').map(part => part.trim());
+    const taskResults: TaskResult[] = [];
+    
+    for (let i = 0; i < parts.length; i++) {
+      const part = parts[i];
+      const result = this.processSingleTask(part);
+      
+      taskResults.push({
+        taskNumber: i + 1,
+        command: part,
+        result: result,
+        status: result.success ? 'completed' : 'failed'
+      });
+    }
+    
+    const completedTasks = taskResults.filter(t => t.status === 'completed').length;
+    const totalTasks = taskResults.length;
+    
+    // Generate follow-up suggestions
+    const followUpSuggestions = this.generateFollowUpSuggestions(taskResults);
+    
+    return {
+      success: true,
+      message: `Compound command executed: ${completedTasks}/${totalTasks} tasks successful`,
+      action: 'multitask',
+      isMultiTask: true,
+      tasks: taskResults,
+      followUpSuggestions
+    };
+  }
+
   private processMultiTaskCommand(command: string): CommandResult {
     // Parse the numbered list
     const tasks = this.parseNumberedList(command);
@@ -288,12 +332,16 @@ export class VoiceCommandProcessor {
     const completedTasks = taskResults.filter(t => t.status === 'completed').length;
     const totalTasks = taskResults.length;
     
+    // Generate follow-up suggestions based on completed tasks
+    const followUpSuggestions = this.generateFollowUpSuggestions(taskResults);
+    
     return {
       success: true,
       message: `Multitask execution completed: ${completedTasks}/${totalTasks} tasks successful`,
       action: 'multitask',
       isMultiTask: true,
-      tasks: taskResults
+      tasks: taskResults,
+      followUpSuggestions
     };
   }
 
@@ -321,13 +369,7 @@ export class VoiceCommandProcessor {
   private processSingleTask(command: string): CommandResult {
     const normalizedCommand = command.toLowerCase().trim();
     
-    // Check for information requests
-    const informationResult = this.processInformationRequest(normalizedCommand);
-    if (informationResult.success) {
-      return informationResult;
-    }
-    
-    // Check for complex actions
+    // Check for complex actions first (including search commands)
     const complexActionResult = this.processComplexAction(normalizedCommand);
     if (complexActionResult.success) {
       return complexActionResult;
@@ -353,6 +395,12 @@ export class VoiceCommandProcessor {
       return this.processVisitCommand(normalizedCommand);
     }
     
+    // Check for information requests
+    const informationResult = this.processInformationRequest(normalizedCommand);
+    if (informationResult.success) {
+      return informationResult;
+    }
+    
     // Check for direct website mention
     return this.processDirectWebsiteCommand(normalizedCommand);
   }
@@ -366,7 +414,7 @@ export class VoiceCommandProcessor {
       /\?$/,
       // More conversational patterns
       /^(i want to know|i need to know|i'm curious about|show me|find out about)/i,
-      /\b(search for|look up|find information about|research)\b/i,
+      /\b(look up|find information about|research)\b/i,
       /^(tell me|show me|give me|find me|get me)/i
     ];
     
@@ -711,6 +759,11 @@ I understand you're asking about ${topic}. This is an interesting topic that cov
     // Gmail commands
     if (command.includes('gmail') && (command.includes('send') || command.includes('compose') || command.includes('email'))) {
       return this.processGmailAction(command);
+    }
+    
+    // Generic search commands
+    if (command.includes('search for') || command.includes('search about') || command.includes('look for')) {
+      return this.processGenericSearch(command);
     }
     
     return { success: false, message: "" };
@@ -1159,6 +1212,139 @@ I understand you're asking about ${topic}. This is an interesting topic that cov
 
   addWebsite(name: string, url: string): void {
     this.websiteMap[name.toLowerCase()] = url;
+  }
+
+  private generateFollowUpSuggestions(taskResults: TaskResult[]): string[] {
+    const suggestions: string[] = [];
+    
+    // Analyze completed tasks to suggest related actions
+    const completedTasks = taskResults.filter(t => t.status === 'completed');
+    
+    for (const task of completedTasks) {
+      const { result } = task;
+      
+      if (result.action === 'open_website') {
+        // Suggest related actions based on the website opened
+        if (result.url?.includes('youtube')) {
+          suggestions.push('Search YouTube for specific content');
+          suggestions.push('Open Spotify for music');
+        } else if (result.url?.includes('google')) {
+          suggestions.push('Search for trending topics');
+          suggestions.push('Open Google News for latest updates');
+        } else if (result.url?.includes('github')) {
+          suggestions.push('Search for specific repositories');
+          suggestions.push('Visit Stack Overflow for coding help');
+        } else if (result.url?.includes('gmail')) {
+          suggestions.push('Open Google Calendar');
+          suggestions.push('Search for specific emails');
+        }
+      } else if (result.action === 'information_request') {
+        // Suggest deeper research based on the topic
+        const topic = this.extractTopicFromResult(result.information || '');
+        if (topic) {
+          suggestions.push(`Search Google for latest ${topic} news`);
+          suggestions.push(`Find ${topic} tutorials on YouTube`);
+          suggestions.push(`Open ${topic} Wikipedia page`);
+        }
+      } else if (result.action === 'complex_action') {
+        // Suggest complementary actions
+        suggestions.push('Open related websites');
+        suggestions.push('Search for additional information');
+      }
+    }
+    
+    // Add general productivity suggestions
+    if (completedTasks.length > 0) {
+      suggestions.push('Open productivity tools like Trello or Notion');
+      suggestions.push('Check social media updates');
+      suggestions.push('Get weather or news updates');
+    }
+    
+    // Remove duplicates and limit to 5 suggestions
+    return [...new Set(suggestions)].slice(0, 5);
+  }
+
+  private extractTopicFromResult(information: string): string | null {
+    // Extract topic from information response
+    const topicMatch = information.match(/\*\*About ([^*]+)\*\*/);
+    if (topicMatch) {
+      return topicMatch[1].toLowerCase();
+    }
+    
+    // Look for other patterns
+    const patterns = [
+      /asking about "([^"]+)"/,
+      /information about ([^.]+)/,
+      /details about ([^.]+)/
+    ];
+    
+    for (const pattern of patterns) {
+      const match = information.match(pattern);
+      if (match) {
+        return match[1].toLowerCase();
+      }
+    }
+    
+    return null;
+  }
+
+  private processGenericSearch(command: string): CommandResult {
+    // Extract search query from generic search commands
+    let searchQuery = '';
+    
+    // Pattern: "search for [query]"
+    const searchForMatch = command.match(/search\s+for\s+(.+)/);
+    if (searchForMatch) {
+      searchQuery = searchForMatch[1].trim();
+    }
+    
+    // Pattern: "search about [query]"
+    const searchAboutMatch = command.match(/search\s+about\s+(.+)/);
+    if (searchAboutMatch) {
+      searchQuery = searchAboutMatch[1].trim();
+    }
+    
+    // Pattern: "look for [query]"
+    const lookForMatch = command.match(/look\s+for\s+(.+)/);
+    if (lookForMatch) {
+      searchQuery = lookForMatch[1].trim();
+    }
+    
+    if (searchQuery) {
+      const steps: CommandStep[] = [
+        {
+          type: 'navigate',
+          target: 'https://www.google.com',
+          description: 'Opening Google'
+        },
+        {
+          type: 'wait',
+          value: '2000',
+          description: 'Waiting for page to load'
+        },
+        {
+          type: 'search',
+          target: 'input[name="q"]',
+          value: searchQuery,
+          description: `Searching for "${searchQuery}"`
+        },
+        {
+          type: 'click',
+          target: 'input[name="btnK"]',
+          description: 'Clicking search button'
+        }
+      ];
+      
+      return {
+        success: true,
+        message: `Searching Google for "${searchQuery}"`,
+        action: 'complex_action',
+        url: 'https://www.google.com',
+        steps: steps
+      };
+    }
+    
+    return { success: false, message: "Could not extract search query" };
   }
 }
 
