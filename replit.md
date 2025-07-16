@@ -16,6 +16,12 @@ This is a modern dual-purpose web application built with React and Express, feat
   - "find on Amazon wireless headphones" → Opens Amazon + provides product search steps
   - "compose email in Gmail" → Opens Gmail + provides compose instructions
   - Added step-by-step instruction display for complex web interactions
+- **LATEST**: Comprehensive AI-powered information system for world knowledge:
+  - "What is artificial intelligence?" → Detailed explanations with context
+  - "Tell me about India" → Geography, culture, and current facts
+  - "How does machine learning work?" → Technical concepts made simple
+  - Intelligent topic recognition and contextual responses
+  - Quick action buttons for deeper research and current information
 
 ## User Preferences
 

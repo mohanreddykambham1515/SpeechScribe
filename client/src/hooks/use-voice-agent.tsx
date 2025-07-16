@@ -18,6 +18,7 @@ interface VoiceAgentState {
   lastCommand: string | null;
   isProcessing: boolean;
   automationSteps: any[];
+  informationResponse: string;
 }
 
 declare global {
@@ -41,6 +42,7 @@ export function useVoiceAgent(settings: VoiceAgentSettings) {
     lastCommand: null,
     isProcessing: false,
     automationSteps: [],
+    informationResponse: "",
   });
 
   // Check browser support
@@ -160,6 +162,11 @@ export function useVoiceAgent(settings: VoiceAgentSettings) {
           if (result.steps && result.steps.length > 0) {
             setState(prev => ({ ...prev, automationSteps: result.steps }));
           }
+        } else if (result.action === 'information_request') {
+          // For information requests, show the information
+          if (result.information) {
+            setState(prev => ({ ...prev, informationResponse: result.information }));
+          }
         }
       } else {
         toast({
@@ -233,6 +240,10 @@ export function useVoiceAgent(settings: VoiceAgentSettings) {
     setState(prev => ({ ...prev, automationSteps: [] }));
   }, []);
 
+  const clearInformationResponse = useCallback(() => {
+    setState(prev => ({ ...prev, informationResponse: "" }));
+  }, []);
+
   // Update recognition settings when they change
   useEffect(() => {
     if (recognition.current) {
@@ -258,5 +269,6 @@ export function useVoiceAgent(settings: VoiceAgentSettings) {
     executeCommand,
     requestPermission,
     clearAutomationSteps,
+    clearInformationResponse,
   };
 }

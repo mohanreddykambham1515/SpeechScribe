@@ -27,6 +27,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Navigation } from "@/components/navigation";
 import { useBrowserAutomation } from "@/hooks/use-browser-automation";
 import { AutomationInstructions } from "@/components/automation-instructions";
+import { InformationDisplay } from "@/components/information-display";
 
 interface VoiceAgentSettings {
   language: string;
@@ -58,6 +59,8 @@ export default function VoiceAgent() {
   const [manualCommand, setManualCommand] = useState("");
   const [automationSteps, setAutomationSteps] = useState<any[]>([]);
   const [showInstructions, setShowInstructions] = useState(false);
+  const [currentInformation, setCurrentInformation] = useState("");
+  const [showInformation, setShowInformation] = useState(false);
 
   const agent = useVoiceAgent(settings);
   const automation = useBrowserAutomation();
@@ -188,6 +191,17 @@ export default function VoiceAgent() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Information Display */}
+        <InformationDisplay
+          information={agent.informationResponse}
+          isVisible={agent.informationResponse.length > 0}
+          onClose={agent.clearInformationResponse}
+          onSearchMore={(query) => {
+            agent.executeCommand(query);
+            agent.clearInformationResponse();
+          }}
+        />
+        
         {/* Automation Instructions */}
         <AutomationInstructions
           steps={agent.automationSteps}
@@ -390,6 +404,7 @@ export default function VoiceAgent() {
                 <div className="text-sm text-gray-600 dark:text-gray-400">
                   <p className="mb-2">Try commands like:</p>
                   <ul className="list-disc pl-4 space-y-1">
+                    <li><strong>Questions:</strong> "What is artificial intelligence?", "Tell me about India"</li>
                     <li><strong>Simple:</strong> "Open Google", "Go to YouTube"</li>
                     <li><strong>Complex:</strong> "Open YouTube and play Telugu music"</li>
                     <li><strong>Search:</strong> "Search Google for best restaurants"</li>
