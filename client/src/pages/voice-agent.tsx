@@ -28,6 +28,7 @@ import { Navigation } from "@/components/navigation";
 import { useBrowserAutomation } from "@/hooks/use-browser-automation";
 import { AutomationInstructions } from "@/components/automation-instructions";
 import { InformationDisplay } from "@/components/information-display";
+import { MultitaskDisplay } from "@/components/multitask-display";
 
 interface VoiceAgentSettings {
   language: string;
@@ -61,6 +62,8 @@ export default function VoiceAgent() {
   const [showInstructions, setShowInstructions] = useState(false);
   const [currentInformation, setCurrentInformation] = useState("");
   const [showInformation, setShowInformation] = useState(false);
+  const [multitaskResults, setMultitaskResults] = useState<any[]>([]);
+  const [showMultitask, setShowMultitask] = useState(false);
 
   const agent = useVoiceAgent(settings);
   const automation = useBrowserAutomation();
@@ -207,6 +210,18 @@ export default function VoiceAgent() {
           steps={agent.automationSteps}
           isVisible={agent.automationSteps.length > 0}
           onClose={agent.clearAutomationSteps}
+        />
+        
+        {/* Multitask Display */}
+        <MultitaskDisplay
+          tasks={agent.multitaskResults}
+          isVisible={agent.multitaskResults.length > 0}
+          onClose={agent.clearMultitaskResults}
+          onExecuteTask={(taskResult) => {
+            if (taskResult.result.url) {
+              window.open(taskResult.result.url, '_blank');
+            }
+          }}
         />
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -410,6 +425,7 @@ export default function VoiceAgent() {
                     <li><strong>Search:</strong> "Search Google for best restaurants"</li>
                     <li><strong>Shopping:</strong> "Find on Amazon wireless headphones"</li>
                     <li><strong>Email:</strong> "Compose email in Gmail"</li>
+                    <li><strong>Multitask:</strong> "1. Open YouTube 2. Search Google for news 3. Go to Gmail"</li>
                   </ul>
                 </div>
               </CardContent>

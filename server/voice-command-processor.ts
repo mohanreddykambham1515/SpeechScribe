@@ -6,6 +6,15 @@ interface CommandResult {
   steps?: CommandStep[];
   information?: string;
   sources?: string[];
+  isMultiTask?: boolean;
+  tasks?: TaskResult[];
+}
+
+interface TaskResult {
+  taskNumber: number;
+  command: string;
+  result: CommandResult;
+  status: 'completed' | 'failed' | 'pending';
 }
 
 interface CommandStep {
@@ -200,7 +209,103 @@ export class VoiceCommandProcessor {
   processCommand(command: string): CommandResult {
     const normalizedCommand = command.toLowerCase().trim();
     
+    // Check for multitask commands (numbered lists)
+    if (this.isMultiTaskCommand(command)) {
+      return this.processMultiTaskCommand(command);
+    }
+    
     // Check for information requests first
+    const informationResult = this.processInformationRequest(normalizedCommand);
+    if (informationResult.success) {
+      return informationResult;
+    }
+    
+    // Check for complex actions
+    const complexActionResult = this.processComplexAction(normalizedCommand);
+    if (complexActionResult.success) {
+      return complexActionResult;
+    }
+    
+    // Check for "open" commands
+    if (normalizedCommand.includes('open')) {
+      return this.processOpenCommand(normalizedCommand);
+    }
+    
+    // Check for "go to" commands
+    if (normalizedCommand.includes('go to')) {
+      return this.processGoToCommand(normalizedCommand);
+    }
+    
+    // Check for "navigate to" commands
+    if (normalizedCommand.includes('navigate to')) {
+      return this.processNavigateCommand(normalizedCommand);
+    }
+    
+    // Check for "visit" commands
+    if (normalizedCommand.includes('visit')) {
+      return this.processVisitCommand(normalizedCommand);
+    }
+    
+    // Check for direct website mention
+    return this.processDirectWebsiteCommand(normalizedCommand);
+  }
+
+  private isMultiTaskCommand(command: string): boolean {
+    // Check for numbered list patterns
+    const numberedPattern = /^\s*\d+\.\s*|(\n\s*\d+\.\s*)/;
+    return numberedPattern.test(command);
+  }
+
+  private processMultiTaskCommand(command: string): CommandResult {
+    // Parse the numbered list
+    const tasks = this.parseNumberedList(command);
+    const taskResults: TaskResult[] = [];
+    
+    for (let i = 0; i < tasks.length; i++) {
+      const task = tasks[i];
+      const result = this.processSingleTask(task.command);
+      
+      taskResults.push({
+        taskNumber: task.number,
+        command: task.command,
+        result: result,
+        status: result.success ? 'completed' : 'failed'
+      });
+    }
+    
+    const completedTasks = taskResults.filter(t => t.status === 'completed').length;
+    const totalTasks = taskResults.length;
+    
+    return {
+      success: true,
+      message: `Multitask execution completed: ${completedTasks}/${totalTasks} tasks successful`,
+      action: 'multitask',
+      isMultiTask: true,
+      tasks: taskResults
+    };
+  }
+
+  private parseNumberedList(command: string): { number: number, command: string }[] {
+    const lines = command.split('\n').filter(line => line.trim());
+    const tasks: { number: number, command: string }[] = [];
+    
+    for (const line of lines) {
+      const match = line.match(/^\s*(\d+)\.\s*(.+)/);
+      if (match) {
+        tasks.push({
+          number: parseInt(match[1]),
+          command: match[2].trim()
+        });
+      }
+    }
+    
+    return tasks;
+  }
+
+  private processSingleTask(command: string): CommandResult {
+    const normalizedCommand = command.toLowerCase().trim();
+    
+    // Check for information requests
     const informationResult = this.processInformationRequest(normalizedCommand);
     if (informationResult.success) {
       return informationResult;

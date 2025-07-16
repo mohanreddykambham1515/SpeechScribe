@@ -19,6 +19,7 @@ interface VoiceAgentState {
   isProcessing: boolean;
   automationSteps: any[];
   informationResponse: string;
+  multitaskResults: any[];
 }
 
 declare global {
@@ -43,6 +44,7 @@ export function useVoiceAgent(settings: VoiceAgentSettings) {
     isProcessing: false,
     automationSteps: [],
     informationResponse: "",
+    multitaskResults: [],
   });
 
   // Check browser support
@@ -167,6 +169,20 @@ export function useVoiceAgent(settings: VoiceAgentSettings) {
           if (result.information) {
             setState(prev => ({ ...prev, informationResponse: result.information }));
           }
+        } else if (result.action === 'multitask') {
+          // For multitask commands, handle task results
+          if (result.isMultiTask && result.tasks) {
+            // Process individual task results
+            result.tasks.forEach((task: any) => {
+              if (task.result.url && task.status === 'completed') {
+                // Open URLs for completed tasks
+                window.open(task.result.url, '_blank');
+              }
+            });
+            
+            // Store multitask results for display
+            setState(prev => ({ ...prev, multitaskResults: result.tasks }));
+          }
         }
       } else {
         toast({
@@ -244,6 +260,10 @@ export function useVoiceAgent(settings: VoiceAgentSettings) {
     setState(prev => ({ ...prev, informationResponse: "" }));
   }, []);
 
+  const clearMultitaskResults = useCallback(() => {
+    setState(prev => ({ ...prev, multitaskResults: [] }));
+  }, []);
+
   // Update recognition settings when they change
   useEffect(() => {
     if (recognition.current) {
@@ -270,5 +290,6 @@ export function useVoiceAgent(settings: VoiceAgentSettings) {
     requestPermission,
     clearAutomationSteps,
     clearInformationResponse,
+    clearMultitaskResults,
   };
 }
