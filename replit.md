@@ -32,6 +32,14 @@ This is a modern dual-purpose web application built with React and Express, feat
   - Support for aliases and common variations (e.g., "sport" → Sports Direct)
   - Automatic fallback to construct URLs for unknown sites
   - Enhanced recognition patterns for better user experience
+- **MULTITASKING**: Advanced sequential command processing for complex workflows:
+  - "1. open youtube 2. search google for news 3. go to gmail" → Executes all 3 tasks in sequence
+  - "1. tell me about javascript 2. open github 3. visit stack overflow" → Information + website opening
+  - Intelligent numbered list parsing with task result tracking
+  - MultitaskDisplay component showing individual task status and results
+  - Automatic execution of successful tasks (website opening, information display)
+  - Support for mixed task types (information requests, website navigation, complex actions)
+  - Task completion statistics and error handling
 
 ## User Preferences
 

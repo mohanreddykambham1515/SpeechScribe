@@ -209,7 +209,7 @@ export class VoiceCommandProcessor {
   processCommand(command: string): CommandResult {
     const normalizedCommand = command.toLowerCase().trim();
     
-    // Check for multitask commands (numbered lists)
+    // Check for multitask commands (numbered lists) - use original command for parsing
     if (this.isMultiTaskCommand(command)) {
       return this.processMultiTaskCommand(command);
     }
@@ -251,14 +251,26 @@ export class VoiceCommandProcessor {
   }
 
   private isMultiTaskCommand(command: string): boolean {
-    // Check for numbered list patterns
-    const numberedPattern = /^\s*\d+\.\s*|(\n\s*\d+\.\s*)/;
-    return numberedPattern.test(command);
+    // Check for numbered list patterns - look for multiple numbered items
+    const numberedItems = command.match(/\d+\.\s*[^0-9]+/g);
+    return numberedItems && numberedItems.length > 1;
   }
 
   private processMultiTaskCommand(command: string): CommandResult {
     // Parse the numbered list
     const tasks = this.parseNumberedList(command);
+
+    
+    if (tasks.length === 0) {
+      return {
+        success: false,
+        message: 'No valid tasks found in the command',
+        action: 'multitask',
+        isMultiTask: true,
+        tasks: []
+      };
+    }
+    
     const taskResults: TaskResult[] = [];
     
     for (let i = 0; i < tasks.length; i++) {
@@ -286,16 +298,20 @@ export class VoiceCommandProcessor {
   }
 
   private parseNumberedList(command: string): { number: number, command: string }[] {
-    const lines = command.split('\n').filter(line => line.trim());
     const tasks: { number: number, command: string }[] = [];
     
-    for (const line of lines) {
-      const match = line.match(/^\s*(\d+)\.\s*(.+)/);
-      if (match) {
-        tasks.push({
-          number: parseInt(match[1]),
-          command: match[2].trim()
-        });
+    // Split by numbered pattern and process each match
+    const numberedItems = command.match(/(\d+)\.\s*([^0-9]+?)(?=\s*\d+\.|$)/g);
+    
+    if (numberedItems) {
+      for (const item of numberedItems) {
+        const match = item.match(/^(\d+)\.\s*(.+)/);
+        if (match) {
+          tasks.push({
+            number: parseInt(match[1]),
+            command: match[2].trim()
+          });
+        }
       }
     }
     
