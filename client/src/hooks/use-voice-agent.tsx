@@ -17,6 +17,7 @@ interface VoiceAgentState {
   error: string | null;
   lastCommand: string | null;
   isProcessing: boolean;
+  automationSteps: any[];
 }
 
 declare global {
@@ -39,6 +40,7 @@ export function useVoiceAgent(settings: VoiceAgentSettings) {
     error: null,
     lastCommand: null,
     isProcessing: false,
+    automationSteps: [],
   });
 
   // Check browser support
@@ -145,9 +147,19 @@ export function useVoiceAgent(settings: VoiceAgentSettings) {
           description: result.message,
         });
         
-        // Execute the action (open website)
+        // Execute different types of actions
         if (result.action === 'open_website' && result.url) {
           window.open(result.url, '_blank');
+        } else if (result.action === 'complex_action') {
+          // For complex actions, open the website and show instructions
+          if (result.url) {
+            window.open(result.url, '_blank');
+          }
+          
+          // Set automation steps for display
+          if (result.steps && result.steps.length > 0) {
+            setState(prev => ({ ...prev, automationSteps: result.steps }));
+          }
         }
       } else {
         toast({
@@ -217,6 +229,10 @@ export function useVoiceAgent(settings: VoiceAgentSettings) {
     processCommand(command);
   }, [processCommand]);
 
+  const clearAutomationSteps = useCallback(() => {
+    setState(prev => ({ ...prev, automationSteps: [] }));
+  }, []);
+
   // Update recognition settings when they change
   useEffect(() => {
     if (recognition.current) {
@@ -241,5 +257,6 @@ export function useVoiceAgent(settings: VoiceAgentSettings) {
     stopListening,
     executeCommand,
     requestPermission,
+    clearAutomationSteps,
   };
 }

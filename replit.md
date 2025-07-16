@@ -10,6 +10,12 @@ This is a modern dual-purpose web application built with React and Express, feat
 - Implemented command processing engine with support for 40+ popular websites
 - Added command history tracking and statistics
 - Created navigation between Speech-to-Text and Voice Agent modes
+- **NEW**: Enhanced with complex action automation supporting multi-step commands:
+  - "open YouTube and play Telugu music" → Opens YouTube + provides search steps
+  - "search Google for best restaurants" → Opens Google + provides search automation
+  - "find on Amazon wireless headphones" → Opens Amazon + provides product search steps
+  - "compose email in Gmail" → Opens Gmail + provides compose instructions
+  - Added step-by-step instruction display for complex web interactions
 
 ## User Preferences
 

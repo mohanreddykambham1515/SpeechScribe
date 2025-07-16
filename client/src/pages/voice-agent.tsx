@@ -25,6 +25,8 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { Navigation } from "@/components/navigation";
+import { useBrowserAutomation } from "@/hooks/use-browser-automation";
+import { AutomationInstructions } from "@/components/automation-instructions";
 
 interface VoiceAgentSettings {
   language: string;
@@ -54,8 +56,11 @@ export default function VoiceAgent() {
   const [showPermissionModal, setShowPermissionModal] = useState(false);
   const [showUnsupportedModal, setShowUnsupportedModal] = useState(false);
   const [manualCommand, setManualCommand] = useState("");
+  const [automationSteps, setAutomationSteps] = useState<any[]>([]);
+  const [showInstructions, setShowInstructions] = useState(false);
 
   const agent = useVoiceAgent(settings);
+  const automation = useBrowserAutomation();
 
   // Fetch command history
   const { data: commandHistory, refetch: refetchHistory } = useQuery({
@@ -183,6 +188,13 @@ export default function VoiceAgent() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Automation Instructions */}
+        <AutomationInstructions
+          steps={agent.automationSteps}
+          isVisible={agent.automationSteps.length > 0}
+          onClose={agent.clearAutomationSteps}
+        />
+        
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Voice Control Panel */}
           <div className="lg:col-span-2 space-y-6">
@@ -378,10 +390,11 @@ export default function VoiceAgent() {
                 <div className="text-sm text-gray-600 dark:text-gray-400">
                   <p className="mb-2">Try commands like:</p>
                   <ul className="list-disc pl-4 space-y-1">
-                    <li>"Open Google"</li>
-                    <li>"Go to YouTube"</li>
-                    <li>"Visit Amazon"</li>
-                    <li>"Navigate to GitHub"</li>
+                    <li><strong>Simple:</strong> "Open Google", "Go to YouTube"</li>
+                    <li><strong>Complex:</strong> "Open YouTube and play Telugu music"</li>
+                    <li><strong>Search:</strong> "Search Google for best restaurants"</li>
+                    <li><strong>Shopping:</strong> "Find on Amazon wireless headphones"</li>
+                    <li><strong>Email:</strong> "Compose email in Gmail"</li>
                   </ul>
                 </div>
               </CardContent>
