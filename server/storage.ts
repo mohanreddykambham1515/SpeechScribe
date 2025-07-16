@@ -61,7 +61,12 @@ export class MemStorage implements IStorage {
   async createTranscriptionSession(insertSession: InsertTranscriptionSession): Promise<TranscriptionSession> {
     const id = this.currentSessionId++;
     const session: TranscriptionSession = {
-      ...insertSession,
+      text: insertSession.text,
+      language: insertSession.language || "en-US",
+      duration: insertSession.duration || 0,
+      wordCount: insertSession.wordCount || 0,
+      charCount: insertSession.charCount || 0,
+      userId: insertSession.userId || null,
       id,
       createdAt: new Date(),
     };
