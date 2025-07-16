@@ -656,7 +656,7 @@ Space exploration and astronomy help us understand our place in the universe.
 • Oort Cloud at the edge of our solar system
 
 **Recent Discoveries**:
-• Exoplanets (p`lanets outside our solar system)
+• Exoplanets: planets outside our solar system
 • Black holes and gravitational waves
 • Dark matter and dark energy
 • Evidence of water on Mars and moons of Jupiter/Saturn`;
