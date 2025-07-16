@@ -72,6 +72,128 @@ export class VoiceCommandProcessor {
       'gcp': 'https://cloud.google.com',
       'docker': 'https://www.docker.com',
       'kubernetes': 'https://kubernetes.io',
+      
+      // Shopping & E-commerce
+      'sportsdirect': 'https://www.sportsdirect.com',
+      'sports direct': 'https://www.sportsdirect.com',
+      'nike': 'https://www.nike.com',
+      'adidas': 'https://www.adidas.com',
+      'puma': 'https://www.puma.com',
+      'under armour': 'https://www.underarmour.com',
+      'zara': 'https://www.zara.com',
+      'h&m': 'https://www.hm.com',
+      'uniqlo': 'https://www.uniqlo.com',
+      'forever21': 'https://www.forever21.com',
+      'target': 'https://www.target.com',
+      'walmart': 'https://www.walmart.com',
+      'costco': 'https://www.costco.com',
+      'bestbuy': 'https://www.bestbuy.com',
+      'best buy': 'https://www.bestbuy.com',
+      
+      // News & Media
+      'bbc': 'https://www.bbc.com',
+      'cnn': 'https://www.cnn.com',
+      'reuters': 'https://www.reuters.com',
+      'guardian': 'https://www.theguardian.com',
+      'nytimes': 'https://www.nytimes.com',
+      'new york times': 'https://www.nytimes.com',
+      'wsj': 'https://www.wsj.com',
+      'wall street journal': 'https://www.wsj.com',
+      'forbes': 'https://www.forbes.com',
+      'techcrunch': 'https://techcrunch.com',
+      
+      // Entertainment
+      'imdb': 'https://www.imdb.com',
+      'hulu': 'https://www.hulu.com',
+      'disney': 'https://www.disney.com',
+      'disneyplus': 'https://www.disneyplus.com',
+      'disney+': 'https://www.disneyplus.com',
+      'hbo': 'https://www.hbo.com',
+      'prime video': 'https://www.primevideo.com',
+      'paramount': 'https://www.paramountplus.com',
+      'peacock': 'https://www.peacocktv.com',
+      
+      // Social & Communication
+      'tiktok': 'https://www.tiktok.com',
+      'snapchat': 'https://www.snapchat.com',
+      'telegram': 'https://web.telegram.org',
+      'signal': 'https://signal.org',
+      'skype': 'https://www.skype.com',
+      'teams': 'https://teams.microsoft.com',
+      'meet': 'https://meet.google.com',
+      'google meet': 'https://meet.google.com',
+      
+      // Travel & Maps
+      'booking': 'https://www.booking.com',
+      'airbnb': 'https://www.airbnb.com',
+      'expedia': 'https://www.expedia.com',
+      'maps': 'https://maps.google.com',
+      'google maps': 'https://maps.google.com',
+      'uber': 'https://www.uber.com',
+      'lyft': 'https://www.lyft.com',
+      'tripadvisor': 'https://www.tripadvisor.com',
+      
+      // Finance & Banking
+      'payoneer': 'https://www.payoneer.com',
+      'wise': 'https://wise.com',
+      'revolut': 'https://www.revolut.com',
+      'coinbase': 'https://www.coinbase.com',
+      'binance': 'https://www.binance.com',
+      'kraken': 'https://www.kraken.com',
+      'robinhood': 'https://robinhood.com',
+      'etoro': 'https://www.etoro.com',
+      
+      // Food & Delivery
+      'ubereats': 'https://www.ubereats.com',
+      'uber eats': 'https://www.ubereats.com',
+      'doordash': 'https://www.doordash.com',
+      'grubhub': 'https://www.grubhub.com',
+      'deliveroo': 'https://deliveroo.com',
+      'just eat': 'https://www.just-eat.com',
+      'zomato': 'https://www.zomato.com',
+      'swiggy': 'https://www.swiggy.com',
+      
+      // Education & Learning
+      'coursera': 'https://www.coursera.org',
+      'udemy': 'https://www.udemy.com',
+      'edx': 'https://www.edx.org',
+      'khan academy': 'https://www.khanacademy.org',
+      'duolingo': 'https://www.duolingo.com',
+      'codecademy': 'https://www.codecademy.com',
+      'freecodecamp': 'https://www.freecodecamp.org',
+      'leetcode': 'https://leetcode.com',
+      'hackerrank': 'https://www.hackerrank.com',
+      
+      // Productivity & Tools
+      'notion': 'https://www.notion.so',
+      'trello': 'https://trello.com',
+      'asana': 'https://asana.com',
+      'monday': 'https://monday.com',
+      'airtable': 'https://airtable.com',
+      'figma': 'https://www.figma.com',
+      'canva': 'https://www.canva.com',
+      'adobe': 'https://www.adobe.com',
+      'photoshop': 'https://www.adobe.com/products/photoshop.html',
+      
+      // Health & Fitness
+      'fitbit': 'https://www.fitbit.com',
+      'myfitnesspal': 'https://www.myfitnesspal.com',
+      'strava': 'https://www.strava.com',
+      'peloton': 'https://www.onepeloton.com',
+      'nike training': 'https://www.nike.com/ntc-app',
+      'headspace': 'https://www.headspace.com',
+      'calm': 'https://www.calm.com',
+      
+      // Gaming
+      'steam': 'https://store.steampowered.com',
+      'epic games': 'https://www.epicgames.com',
+      'origin': 'https://www.origin.com',
+      'battlenet': 'https://www.battle.net',
+      'playstation': 'https://www.playstation.com',
+      'xbox': 'https://www.xbox.com',
+      'nintendo': 'https://www.nintendo.com',
+      'roblox': 'https://www.roblox.com',
+      'minecraft': 'https://www.minecraft.net',
     };
   }
 
@@ -120,15 +242,40 @@ export class VoiceCommandProcessor {
       /^(what|who|where|when|why|how|which|tell me about|explain|describe|define)/i,
       /^(is|are|was|were|do|does|did|can|could|would|should|will)/i,
       /(about|information|details|facts|history|meaning|definition)/i,
-      /\?$/
+      /\?$/,
+      // More conversational patterns
+      /^(i want to know|i need to know|i'm curious about|show me|find out about)/i,
+      /\b(search for|look up|find information about|research)\b/i,
+      /^(tell me|show me|give me|find me|get me)/i
     ];
     
     const isQuestion = questionPatterns.some(pattern => pattern.test(command));
     
-    if (isQuestion) {
+    // Also check for standalone topics that might be implicit questions
+    const standaloneTopics = [
+      'artificial intelligence', 'machine learning', 'climate change', 'global warming',
+      'space', 'universe', 'solar system', 'history', 'medicine', 'health', 'science',
+      'technology', 'programming', 'coding', 'javascript', 'python', 'react', 'nodejs',
+      'covid', 'coronavirus', 'vaccine', 'pandemic', 'economy', 'stock market',
+      'cryptocurrency', 'bitcoin', 'blockchain', 'web3', 'nft', 'metaverse',
+      'politics', 'government', 'democracy', 'election', 'president', 'congress',
+      'education', 'university', 'college', 'school', 'learning', 'study',
+      'food', 'cooking', 'recipe', 'nutrition', 'diet', 'fitness', 'exercise',
+      'travel', 'vacation', 'tourism', 'hotel', 'flight', 'car', 'transportation',
+      'movie', 'film', 'music', 'song', 'book', 'novel', 'game', 'sport',
+      'weather', 'climate', 'temperature', 'rain', 'snow', 'storm', 'hurricane',
+      'business', 'company', 'startup', 'entrepreneur', 'marketing', 'sales',
+      'job', 'career', 'work', 'employment', 'salary', 'interview', 'resume'
+    ];
+    
+    const isStandaloneTopic = standaloneTopics.some(topic => 
+      command.toLowerCase().includes(topic.toLowerCase())
+    );
+    
+    if (isQuestion || isStandaloneTopic) {
       return {
         success: true,
-        message: "I'll search for information about that topic",
+        message: "I'll provide information about that topic",
         action: 'information_request',
         information: this.generateInformationResponse(command)
       };
@@ -223,6 +370,85 @@ Machine Learning is a subset of AI that enables computers to learn and improve f
 
 **Applications**:
 • Image recognition, speech processing, recommendations, fraud detection`;
+    }
+    
+    // Programming languages
+    if (topicLower.includes('javascript')) {
+      return `💻 **About JavaScript**:
+
+JavaScript is a versatile programming language primarily used for web development.
+
+**Key Features**:
+• Dynamic typing and interpreted execution
+• Runs in browsers and on servers (Node.js)
+• Event-driven and asynchronous programming
+• Supports object-oriented and functional programming
+
+**Common Uses**:
+• Frontend web development (React, Vue, Angular)
+• Backend development (Node.js, Express)
+• Mobile app development (React Native)
+• Desktop applications (Electron)
+• Game development and data visualization`;
+    }
+    
+    if (topicLower.includes('python')) {
+      return `🐍 **About Python**:
+
+Python is a high-level programming language known for its simplicity and readability.
+
+**Key Features**:
+• Easy-to-read syntax
+• Extensive standard library
+• Cross-platform compatibility
+• Strong community support
+
+**Popular Uses**:
+• Web development (Django, Flask)
+• Data science and machine learning
+• Automation and scripting
+• Scientific computing
+• Artificial intelligence development`;
+    }
+    
+    // Cryptocurrency and blockchain
+    if (topicLower.includes('bitcoin') || topicLower.includes('cryptocurrency')) {
+      return `₿ **About Cryptocurrency & Bitcoin**:
+
+Cryptocurrency is digital money secured by cryptography and operated on decentralized networks.
+
+**Bitcoin Basics**:
+• First cryptocurrency created in 2009
+• Decentralized digital currency
+• Uses blockchain technology
+• Limited supply of 21 million coins
+
+**Key Concepts**:
+• Blockchain: Distributed ledger technology
+• Mining: Process of validating transactions
+• Wallets: Software to store and manage crypto
+• Volatility: Prices can fluctuate significantly`;
+    }
+    
+    // Web development
+    if (topicLower.includes('programming') || topicLower.includes('coding')) {
+      return `🖥️ **About Programming**:
+
+Programming is the process of creating instructions for computers to solve problems and automate tasks.
+
+**Popular Languages**:
+• JavaScript - Web development
+• Python - Data science, AI, web development
+• Java - Enterprise applications
+• C++ - System programming, games
+• Swift - iOS development
+
+**Key Concepts**:
+• Variables and data types
+• Control structures (loops, conditions)
+• Functions and algorithms
+• Object-oriented programming
+• Problem-solving and logical thinking`;
     }
     
     // Science topics
@@ -656,17 +882,23 @@ I understand you're asking about ${topic}. This is an interesting topic that cov
   }
 
   private findWebsite(websiteName: string): CommandResult {
-    // Remove common suffixes
-    const cleanName = websiteName
+    const normalizedName = websiteName.toLowerCase().trim();
+    
+    // Remove common suffixes and words
+    const cleanName = normalizedName
       .replace(/\.com$/, '')
       .replace(/\.org$/, '')
       .replace(/\.net$/, '')
       .replace(/\.io$/, '')
       .replace(/website$/, '')
       .replace(/site$/, '')
+      .replace(/\bthe\b/g, '')
+      .replace(/\bopen\b/g, '')
+      .replace(/\bgo\b/g, '')
+      .replace(/\bto\b/g, '')
       .trim();
 
-    // Check exact match
+    // Direct match
     if (this.websiteMap[cleanName]) {
       return {
         success: true,
@@ -676,7 +908,85 @@ I understand you're asking about ${topic}. This is an interesting topic that cov
       };
     }
 
-    // Check partial match
+    // Special aliases and common variations
+    const aliases: { [key: string]: string } = {
+      'fb': 'facebook',
+      'ig': 'instagram', 
+      'yt': 'youtube',
+      'gm': 'gmail',
+      'sports': 'sports direct',
+      'sport': 'sports direct',
+      'direct': 'sports direct',
+      'sportsdirect': 'sports direct',
+      'linked': 'linkedin',
+      'whats': 'whatsapp',
+      'app': 'whatsapp',
+      'stack': 'stackoverflow',
+      'overflow': 'stackoverflow',
+      'prime': 'prime video',
+      'video': 'prime video',
+      'best': 'best buy',
+      'buy': 'best buy',
+      'bestbuy': 'best buy',
+      'epic': 'epic games',
+      'games': 'epic games',
+      'khan': 'khan academy',
+      'academy': 'khan academy',
+      'free': 'freecodecamp',
+      'code': 'freecodecamp',
+      'camp': 'freecodecamp',
+      'leet': 'leetcode',
+      'hacker': 'hackerrank',
+      'rank': 'hackerrank',
+      'my': 'myfitnesspal',
+      'fitness': 'myfitnesspal',
+      'pal': 'myfitnesspal',
+      'disney': 'disney+',
+      'plus': 'disney+',
+      'times': 'new york times',
+      'york': 'new york times',
+      'new': 'new york times',
+      'wall': 'wall street journal',
+      'street': 'wall street journal',
+      'journal': 'wall street journal',
+      'wsj': 'wall street journal',
+      'tech': 'techcrunch',
+      'crunch': 'techcrunch',
+      'uber': 'uber',
+      'eats': 'uber eats',
+      'door': 'doordash',
+      'dash': 'doordash',
+      'grub': 'grubhub',
+      'hub': 'grubhub',
+      'just': 'just eat',
+      'eat': 'just eat',
+      'h': 'h&m',
+      'm': 'h&m',
+      'under': 'under armour',
+      'armour': 'under armour',
+      'armor': 'under armour',
+      'forever': 'forever21',
+      '21': 'forever21',
+      'twenty': 'forever21',
+      'one': 'forever21'
+    };
+
+    // Check aliases
+    for (const [alias, fullName] of Object.entries(aliases)) {
+      if (cleanName.includes(alias) || alias.includes(cleanName)) {
+        const url = this.websiteMap[fullName];
+        if (url) {
+          return {
+            success: true,
+            message: `Opening ${fullName}`,
+            action: 'open_website',
+            url: url
+          };
+        }
+      }
+    }
+
+    // Fuzzy matching - check if the input contains any known website names
     for (const [key, url] of Object.entries(this.websiteMap)) {
       if (key.includes(cleanName) || cleanName.includes(key)) {
         return {
@@ -688,9 +998,26 @@ I understand you're asking about ${topic}. This is an interesting topic that cov
       }
     }
 
+    // Check for partial word matches
+    const words = cleanName.split(' ');
+    for (const word of words) {
+      if (word.length > 2) { // Only check meaningful words
+        for (const [key, url] of Object.entries(this.websiteMap)) {
+          if (key.includes(word) || word.includes(key)) {
+            return {
+              success: true,
+              message: `Opening ${key}`,
+              action: 'open_website',
+              url: url
+            };
+          }
+        }
+      }
+    }
+
     // If no match found, try to construct a URL
     if (cleanName.length > 0) {
-      const constructedUrl = `https://www.${cleanName}.com`;
+      const constructedUrl = `https://www.${cleanName.replace(/\s+/g, '')}.com`;
       return {
         success: true,
         message: `Opening ${cleanName}`,
@@ -699,7 +1026,10 @@ I understand you're asking about ${topic}. This is an interesting topic that cov
       };
     }
 
-    return { success: false, message: `I couldn't find a website for "${websiteName}". Try being more specific.` };
+    return { 
+      success: false, 
+      message: `I couldn't find a website for "${websiteName}". Try being more specific or say "open [website name]".` 
+    };
   }
 
   getSupportedWebsites(): string[] {

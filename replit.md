@@ -20,8 +20,18 @@ This is a modern dual-purpose web application built with React and Express, feat
   - "What is artificial intelligence?" → Detailed explanations with context
   - "Tell me about India" → Geography, culture, and current facts
   - "How does machine learning work?" → Technical concepts made simple
-  - Intelligent topic recognition and contextual responses
+  - "JavaScript" → Programming language details and applications
+  - "Bitcoin" → Cryptocurrency explanation with key concepts
+  - "Programming" → Overview of coding languages and concepts
+  - Intelligent topic recognition with 40+ topic categories
+  - Conversational queries like "show me", "tell me", "find out about"
   - Quick action buttons for deeper research and current information
+- **ENHANCED**: Massively expanded website recognition system:
+  - Added 100+ popular websites including Sports Direct, Nike, Adidas, Netflix, Spotify
+  - Intelligent fuzzy matching for partial website names
+  - Support for aliases and common variations (e.g., "sport" → Sports Direct)
+  - Automatic fallback to construct URLs for unknown sites
+  - Enhanced recognition patterns for better user experience
 
 ## User Preferences
 
