@@ -130,7 +130,7 @@ export class VoiceCommandProcessor {
       'signal': 'https://signal.org',
       'skype': 'https://www.skype.com',
       'teams': 'https://teams.microsoft.com',
-      'meet': 'https://meet.google.com',
+      'meet': 'https://teams.microsoft.com',
       'google meet': 'https://meet.google.com',
       
       // Travel & Maps
@@ -346,10 +346,12 @@ export class VoiceCommandProcessor {
   }
 
   private parseNumberedList(command: string): { number: number, command: string }[] {
+    console.log('Original command for parseNumberedList:', command); // Add this
     const tasks: { number: number, command: string }[] = [];
     
     // Split by numbered pattern and process each match
     const numberedItems = command.match(/(\d+)\.\s*([^0-9]+?)(?=\s*\d+\.|$)/g);
+    console.log('Numbered items found by regex:', numberedItems); // Add this
     
     if (numberedItems) {
       for (const item of numberedItems) {
@@ -359,10 +361,11 @@ export class VoiceCommandProcessor {
             number: parseInt(match[1]),
             command: match[2].trim()
           });
+          console.log(`Parsed task: Number ${match[1]}, Command: "${match[2].trim()}"`); // Add this
         }
       }
     }
-    
+    console.log('Final parsed tasks:', tasks); // Add this
     return tasks;
   }
 
@@ -653,7 +656,7 @@ Space exploration and astronomy help us understand our place in the universe.
 • Oort Cloud at the edge of our solar system
 
 **Recent Discoveries**:
-• Exoplanets (planets outside our solar system)
+• Exoplanets (p`lanets outside our solar system)
 • Black holes and gravitational waves
 • Dark matter and dark energy
 • Evidence of water on Mars and moons of Jupiter/Saturn`;
