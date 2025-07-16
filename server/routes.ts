@@ -1,7 +1,8 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertTranscriptionSessionSchema } from "@shared/schema";
+import { insertTranscriptionSessionSchema, insertVoiceCommandSchema } from "@shared/schema";
+import { voiceCommandProcessor } from "./voice-command-processor";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -82,6 +83,56 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(stats);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch statistics" });
+    }
+  });
+
+  // Voice command processing
+  app.post("/api/voice-commands", async (req, res) => {
+    try {
+      const { command } = req.body;
+      
+      if (!command || typeof command !== 'string') {
+        return res.status(400).json({ error: "Command is required" });
+      }
+
+      // Process the command
+      const result = voiceCommandProcessor.processCommand(command);
+      
+      // Log the command to storage
+      const commandData = {
+        command: command,
+        action: result.action || 'unknown',
+        target: result.url || command,
+        success: result.success,
+        userId: null, // For now, no user system
+      };
+
+      await storage.createVoiceCommand(commandData);
+      
+      res.json(result);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to process voice command" });
+    }
+  });
+
+  // Get voice command history
+  app.get("/api/voice-commands", async (req, res) => {
+    try {
+      const limit = req.query.limit ? parseInt(req.query.limit as string) : 50;
+      const commands = await storage.getVoiceCommandHistory(limit);
+      res.json(commands);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch voice command history" });
+    }
+  });
+
+  // Get supported websites
+  app.get("/api/supported-websites", async (req, res) => {
+    try {
+      const websites = voiceCommandProcessor.getSupportedWebsites();
+      res.json(websites);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch supported websites" });
     }
   });
 

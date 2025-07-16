@@ -8,6 +8,7 @@ import { StatisticsPanel } from "@/components/statistics-panel";
 import { KeyboardShortcuts } from "@/components/keyboard-shortcuts";
 import { PermissionModal } from "@/components/permission-modal";
 import { UnsupportedModal } from "@/components/unsupported-modal";
+import { Navigation } from "@/components/navigation";
 import { Mic, Settings } from "lucide-react";
 
 interface SpeechRecognitionSettings {
@@ -156,7 +157,7 @@ export default function SpeechToText() {
                 <div className={`w-3 h-3 rounded-full ${getBrowserStatusColor()}`} />
                 <span className="text-sm text-gray-600">{getBrowserStatusText()}</span>
               </div>
-              <Settings className="w-5 h-5 text-gray-400" />
+              <Navigation />
             </div>
           </div>
         </div>

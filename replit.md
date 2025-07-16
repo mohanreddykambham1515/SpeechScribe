@@ -2,9 +2,14 @@
 
 ## Overview
 
-This is a modern speech-to-text web application built with React and Express. The application allows users to record speech, convert it to text using the Web Speech API, and manage transcription sessions with full CRUD operations. The frontend uses shadcn/ui components for a polished user interface, while the backend provides RESTful API endpoints for data persistence.
+This is a modern dual-purpose web application built with React and Express, featuring both speech-to-text transcription and voice-controlled web navigation. The application allows users to record speech, convert it to text using the Web Speech API, and execute voice commands to open websites and navigate the web. The frontend uses shadcn/ui components for a polished user interface, while the backend provides RESTful API endpoints for data persistence and command processing.
 
-**Recent Update (July 16, 2025)**: Enhanced browser compatibility with improved fallback support for browsers that don't support Web Speech API, allowing the app to function as a text editor with full save/export functionality.
+**Recent Update (July 16, 2025)**: 
+- Added Voice Web Agent feature with voice-controlled website navigation
+- Enhanced browser compatibility with improved fallback support
+- Implemented command processing engine with support for 40+ popular websites
+- Added command history tracking and statistics
+- Created navigation between Speech-to-Text and Voice Agent modes
 
 ## User Preferences
 

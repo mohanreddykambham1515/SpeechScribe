@@ -1,4 +1,4 @@
-import { users, transcriptionSessions, type User, type InsertUser, type TranscriptionSession, type InsertTranscriptionSession } from "@shared/schema";
+import { users, transcriptionSessions, voiceCommands, type User, type InsertUser, type TranscriptionSession, type InsertTranscriptionSession, type VoiceCommand, type InsertVoiceCommand } from "@shared/schema";
 
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
@@ -16,19 +16,28 @@ export interface IStorage {
     wordsTranscribed: number;
     avgWordsPerSession: number;
   }>;
+  
+  getVoiceCommands(): Promise<VoiceCommand[]>;
+  getVoiceCommand(id: number): Promise<VoiceCommand | undefined>;
+  createVoiceCommand(command: InsertVoiceCommand): Promise<VoiceCommand>;
+  getVoiceCommandHistory(limit?: number): Promise<VoiceCommand[]>;
 }
 
 export class MemStorage implements IStorage {
   private users: Map<number, User>;
   private transcriptionSessions: Map<number, TranscriptionSession>;
+  private voiceCommands: Map<number, VoiceCommand>;
   private currentUserId: number;
   private currentSessionId: number;
+  private currentCommandId: number;
 
   constructor() {
     this.users = new Map();
     this.transcriptionSessions = new Map();
+    this.voiceCommands = new Map();
     this.currentUserId = 1;
     this.currentSessionId = 1;
+    this.currentCommandId = 1;
   }
 
   async getUser(id: number): Promise<User | undefined> {
@@ -108,6 +117,38 @@ export class MemStorage implements IStorage {
       wordsTranscribed,
       avgWordsPerSession,
     };
+  }
+
+  async getVoiceCommands(): Promise<VoiceCommand[]> {
+    return Array.from(this.voiceCommands.values()).sort(
+      (a, b) => new Date(b.executedAt).getTime() - new Date(a.executedAt).getTime()
+    );
+  }
+
+  async getVoiceCommand(id: number): Promise<VoiceCommand | undefined> {
+    return this.voiceCommands.get(id);
+  }
+
+  async createVoiceCommand(insertCommand: InsertVoiceCommand): Promise<VoiceCommand> {
+    const id = this.currentCommandId++;
+    const command: VoiceCommand = {
+      command: insertCommand.command,
+      action: insertCommand.action,
+      target: insertCommand.target,
+      success: insertCommand.success ?? true,
+      userId: insertCommand.userId || null,
+      id,
+      executedAt: new Date(),
+    };
+    this.voiceCommands.set(id, command);
+    return command;
+  }
+
+  async getVoiceCommandHistory(limit: number = 50): Promise<VoiceCommand[]> {
+    const commands = Array.from(this.voiceCommands.values()).sort(
+      (a, b) => new Date(b.executedAt).getTime() - new Date(a.executedAt).getTime()
+    );
+    return commands.slice(0, limit);
   }
 }
 
