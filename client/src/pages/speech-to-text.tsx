@@ -131,7 +131,7 @@ export default function SpeechToText() {
   };
 
   const getBrowserStatusText = () => {
-    return speech.isSupported ? "Browser Supported" : "Not Supported";
+    return speech.isSupported ? "Speech API Supported" : "Manual Input Only";
   };
 
   return (
@@ -146,7 +146,9 @@ export default function SpeechToText() {
               </div>
               <div>
                 <h1 className="text-xl font-semibold text-gray-900">Speech to Text</h1>
-                <p className="text-sm text-gray-500">Real-time transcription</p>
+                <p className="text-sm text-gray-500">
+                  {speech.isSupported ? "Real-time transcription" : "Text editor with save/export"}
+                </p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -181,6 +183,7 @@ export default function SpeechToText() {
               isRecording={speech.isRecording}
               onClear={speech.clearTranscript}
               onTranscriptChange={speech.setTranscript}
+              isSupported={speech.isSupported}
             />
           </div>
 

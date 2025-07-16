@@ -4,6 +4,8 @@
 
 This is a modern speech-to-text web application built with React and Express. The application allows users to record speech, convert it to text using the Web Speech API, and manage transcription sessions with full CRUD operations. The frontend uses shadcn/ui components for a polished user interface, while the backend provides RESTful API endpoints for data persistence.
 
+**Recent Update (July 16, 2025)**: Enhanced browser compatibility with improved fallback support for browsers that don't support Web Speech API, allowing the app to function as a text editor with full save/export functionality.
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.

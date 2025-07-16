@@ -47,12 +47,18 @@ export function useSpeechRecognition(settings: SpeechRecognitionSettings) {
   // Check browser support
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    
+    // Log browser info for debugging
+    console.log("Browser:", navigator.userAgent);
+    console.log("SpeechRecognition support:", !!SpeechRecognition);
+    
     if (SpeechRecognition) {
       setState(prev => ({ ...prev, isSupported: true }));
       recognition.current = new SpeechRecognition();
       setupRecognition();
     } else {
       setState(prev => ({ ...prev, isSupported: false }));
+      console.warn("Web Speech API not supported in this browser");
     }
   }, []);
 

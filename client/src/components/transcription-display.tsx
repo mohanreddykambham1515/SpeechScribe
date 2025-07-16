@@ -10,6 +10,7 @@ interface TranscriptionDisplayProps {
   isRecording: boolean;
   onClear: () => void;
   onTranscriptChange: (text: string) => void;
+  isSupported?: boolean;
 }
 
 export function TranscriptionDisplay({
@@ -18,6 +19,7 @@ export function TranscriptionDisplay({
   isRecording,
   onClear,
   onTranscriptChange,
+  isSupported = true,
 }: TranscriptionDisplayProps) {
   const { toast } = useToast();
   const [wordCount, setWordCount] = useState(0);
@@ -95,7 +97,12 @@ export function TranscriptionDisplay({
               <span className="text-gray-500 italic">{interimTranscript}</span>
             )}
             {!transcript && !interimTranscript && (
-              <span className="text-gray-400">Your transcription will appear here...</span>
+              <span className="text-gray-400">
+                {isSupported 
+                  ? "Your transcription will appear here..." 
+                  : "Start typing your text here, or paste content to edit and export..."
+                }
+              </span>
             )}
           </div>
 
